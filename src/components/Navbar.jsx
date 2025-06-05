@@ -1,55 +1,28 @@
-
+// Navbar.js
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Home, User, LogOut, LogIn, UserPlus } from 'lucide-react';
 
 function Navbar() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
 
   return (
     <nav className="navbar">
-      <div className="nav-container">
-        <Link to="/" className="nav-logo">
-          NewsNexus
-        </Link>
-        
-        <div className="nav-links">
-          <Link to="/" className="nav-link">
-            <Home size={20} />
-            Home
-          </Link>
-          
-          {user ? (
-            <>
-              <Link to="/dashboard" className="nav-link">
-                <User size={20} />
-                Dashboard
-              </Link>
-              <button onClick={handleLogout} className="nav-link logout-btn">
-                <LogOut size={20} />
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="nav-link">
-                <LogIn size={20} />
-                Login
-              </Link>
-              <Link to="/signup" className="nav-link signup-btn">
-                <UserPlus size={20} />
-                Sign Up
-              </Link>
-            </>
-          )}
-        </div>
+      <Link to="/" className="logo">NewsNexus</Link>
+
+      <div className="nav-links">
+        {user ? (
+          <>
+            <Link to="/dashboard">Dashboard</Link>
+            <span className="username">{user.name}</span>
+            <button onClick={logout} className="logout-btn">Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/signup">Signup</Link>
+          </>
+        )}
       </div>
     </nav>
   );
