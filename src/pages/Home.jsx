@@ -9,9 +9,7 @@ function Home() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await axios.get(
-          `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?q=technology&pageSize=10&sortBy=publishedAt&apiKey=a0fe55c23ecf420f952ff5f45c31b797`
-        );
+        const res = await axios.get("http://127.0.0.1:8000/api/auth/news/");
 
         console.log("API raw response:", res.data);
         const formattedArticles = res.data.articles.map((item, index) => ({
