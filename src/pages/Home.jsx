@@ -9,10 +9,17 @@ function Home() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await axios.get("http://127.0.0.1:8000/api/auth/news/");
+        const targetUrl = encodeURIComponent(
+          "https://newsapi.org/v2/everything?q=technology&pageSize=10&sortBy=publishedAt&apiKey=a0fe55c23ecf420f952ff5f45c31b797"
+        );
+        const proxyUrl = `https://api.allorigins.win/get?url=${targetUrl}`;
 
-        console.log("API raw response:", res.data);
-        const formattedArticles = res.data.articles.map((item, index) => ({
+        const res = await axios.get(proxyUrl);
+
+        // allorigins returns data in res.data.contents as string, so parse it
+        const data = JSON.parse(res.data.contents);
+
+        const formattedArticles = data.articles.map((item, index) => ({
           id: index + 1,
           title: item.title,
           author: item.author || "Unknown",
@@ -22,6 +29,7 @@ function Home() {
           dislikes: 0,
           category: item.source.name,
         }));
+
         setArticles(formattedArticles);
       } catch (error) {
         console.error("Error fetching news:", error);
